@@ -8,7 +8,8 @@ describe('Toga Loader', () => {
   const componentPath = `1/2/${componentName}/4`;
   const entryComponentPath = `1/2/${componentName}`;
   const sandbox = sinon.sandbox.create();
-  const bootstrapper = `const elems = document.querySelectorAll('[toga=${componentName}]');
+  const bootstrapper = `window.document.addEventListener("DOMContentLoaded", function(event) {
+      const elems = document.querySelectorAll('[toga=${componentName}]');
       [].forEach.call(elems, function(elem) {
         let props;
         try {
@@ -20,7 +21,8 @@ describe('Toga Loader', () => {
             ? module.exports
             : exports.default;
         ReactDOM.render(<Component {...props}/>, elem);
-      });`;
+      });
+    });`;
   const fakePath = {
     join: function () {
     }
