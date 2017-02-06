@@ -20,19 +20,23 @@ module.exports = function (source) {
   }
   try {
     loaderSource = `${source};
-      const elems = document.querySelectorAll('[toga=${componentName}]');
-      [].forEach.call(elems, function(elem) {
-        let props;
-        try {
-          props = JSON.parse(elem.getAttribute('props'));
-        } catch (e) {
-          props = {};
-        }
-        const Component = (typeof exports.default === 'undefined')
-            ? module.exports
-            : exports.default;
-        ReactDOM.render(<Component {...props}/>, elem);
-      });`;
+    window.document.addEventListener("DOMContentLoaded", function(event) {
+      window.setTimeout(function(){
+        const elems = document.querySelectorAll('[toga=${componentName}]');
+        [].forEach.call(elems, function(elem) {
+          let props;
+          try {
+            props = JSON.parse(elem.getAttribute('props'));
+          } catch (e) {
+            props = {};
+          }
+          const Component = (typeof exports.default === 'undefined')
+              ? module.exports
+              : exports.default;
+          ReactDOM.render(<Component {...props}/>, elem);
+        });
+      }, 1);
+    });`;
   }
   catch (e) {
     return source;
