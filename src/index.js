@@ -20,6 +20,7 @@ module.exports = function (source) {
   }
   try {
     loaderSource = `${source};
+    window.document.addEventListener("DOMContentLoaded", function(event) {
       const elems = document.querySelectorAll('[toga=${componentName}]');
       [].forEach.call(elems, function(elem) {
         let props;
@@ -32,7 +33,8 @@ module.exports = function (source) {
             ? module.exports
             : exports.default;
         ReactDOM.render(<Component {...props}/>, elem);
-      });`;
+      });
+    });`;
   }
   catch (e) {
     return source;
