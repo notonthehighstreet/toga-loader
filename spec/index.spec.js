@@ -9,19 +9,21 @@ describe('Toga Loader', () => {
   const entryComponentPath = `1/2/${componentName}`;
   const sandbox = sinon.sandbox.create();
   const bootstrapper = `window.document.addEventListener("DOMContentLoaded", function(event) {
-      const elems = document.querySelectorAll('[toga=${componentName}]');
-      [].forEach.call(elems, function(elem) {
-        let props;
-        try {
-          props = JSON.parse(elem.getAttribute('props'));
-        } catch (e) {
-          props = {};
-        }
-        const Component = (typeof exports.default === 'undefined')
-            ? module.exports
-            : exports.default;
-        ReactDOM.render(<Component {...props}/>, elem);
-      });
+      window.setTimeout(function(){
+        const elems = document.querySelectorAll('[toga=${componentName}]');
+        [].forEach.call(elems, function(elem) {
+          let props;
+          try {
+            props = JSON.parse(elem.getAttribute('props'));
+          } catch (e) {
+            props = {};
+          }
+          const Component = (typeof exports.default === 'undefined')
+              ? module.exports
+              : exports.default;
+          ReactDOM.render(<Component {...props}/>, elem);
+        });
+      }, 1);
     });`;
   const fakePath = {
     join: function () {
